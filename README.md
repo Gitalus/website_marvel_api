@@ -1,1 +1,1 @@
-# Website created using Marvel API: https://developer.marvel.com
+# Website created using Marvel API (https://developer.marvel.com)
