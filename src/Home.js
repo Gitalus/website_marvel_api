@@ -7,6 +7,7 @@ export const Home = () => {
     const [characters, setCharacters] = useState(null);
     const [comics, setComics] = useState(null);
     const [hash] = useState(md5(1+process.env.REACT_APP_PRIVATE_KEY+process.env.REACT_APP_PUBLIC_KEY));
+    const [selected, setSelected] = useState(null);
 
     
         useEffect(() => {
@@ -42,19 +43,25 @@ export const Home = () => {
             </div>
             <div className="row">
                 <div className="col-md-8 offset-2 mb-3">
-                    <div className="card">
-                        <img src="..." className="card-img-top" alt="..." />
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
-                            </p>
-                            <a href="#" className="btn btn-primary">
-                            Go somewhere
-                            </a>
+                    {   !!selected &&
+                        <div className="card detail">
+                            <img src={`${selected.thumbnail.path}.${selected.thumbnail.extension}`} className="card-img-top" alt="..." />
+                            <div className="card-body">
+                                <h5 className="card-title">{ selected.name }</h5>
+                                <p className="card-text">
+                                {
+                                    selected.description
+                                }
+                                </p>
+                                <a href="#" className="btn btn-primary">
+                                Go somewhere
+                                </a>
+                            </div>
+                                <div className="card-footer">
+                                    <button className="btn btn-danger btn-sm float-end" onClick={ () => setSelected(null)}>Close</button>
+                                </div>
                         </div>
-                    </div>
+                    }
 
                 </div>
             </div>
@@ -68,8 +75,8 @@ export const Home = () => {
                                 !!characters &&
                                 characters.data.results.map( ({ id, name, thumbnail, description }, index) =>{
                                     return (
-                                        <div key={ index }className="col-md-4">
-                                            <div className="card mb-3" style={{ maxWidth: 540 }}>
+                                        <div key={ index }className="col-md-6">
+                                            <div className="card mb-3 info" style={{ maxWidth: 540 }}>
                                                 <div className="row g-0">
                                                     <div className="col-md-4">
                                                         <img src={`${thumbnail.path}.${thumbnail.extension}`} className="rounded-start" alt="..." />
@@ -85,6 +92,9 @@ export const Home = () => {
                                                             <p className="card-text">
                                                                 <small className="text-muted">Last updated 3 mins ago</small>
                                                             </p>
+                                                            <button className="btn btn-outline-success" onClick={ () => setSelected({ name, thumbnail, description }) }>
+                                                                Show Details
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     </div>
